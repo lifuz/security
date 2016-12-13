@@ -105,39 +105,37 @@ public class RSAEncryptor {
         String privatePath = getKeyFromFile(PRIVATE_KEY_PATH);
         String publicPath = getKeyFromFile(PUBLIC_KEY_PATH);
 
-        privateKey = loadPrivateKey(privatePath);
+        loadPrivateKey(privatePath);
 
-        publicKey = loadPublicKey(publicPath);
+        loadPublicKey(publicPath);
     }
 
     /**
      * 加载公钥
      *
-     * @param publicKey 公钥字符串
-     * @return 公钥
+     * @param publicKeyStr 公钥字符串
      * @throws Exception 抛出异常
      */
-    public PublicKey loadPublicKey(String publicKey) throws Exception {
-        byte[] buffer = Base64.decodeBase64(publicKey.getBytes());
+    public void loadPublicKey(String publicKeyStr) throws Exception {
+        byte[] buffer = Base64.decodeBase64(publicKeyStr.getBytes());
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(buffer);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        return keyFactory.generatePublic(x509EncodedKeySpec);
+        publicKey = keyFactory.generatePublic(x509EncodedKeySpec);
     }
 
     /**
      * 加载私钥
      *
-     * @param privateKey 私钥字符串
-     * @return 私钥
+     * @param privateKeyStr 私钥字符串
      * @throws Exception 抛出异常
      */
-    public PrivateKey loadPrivateKey(String privateKey) throws Exception {
+    public void loadPrivateKey(String privateKeyStr) throws Exception {
 
-        byte[] buffer = Base64.decodeBase64(privateKey.getBytes());
+        byte[] buffer = Base64.decodeBase64(privateKeyStr.getBytes());
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(buffer);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
-        return keyFactory.generatePrivate(keySpec);
+        privateKey = keyFactory.generatePrivate(keySpec);
     }
 
     /**
@@ -200,19 +198,5 @@ public class RSAEncryptor {
 
     }
 
-    public PrivateKey getPrivateKey() {
-        return privateKey;
-    }
 
-    public void setPrivateKey(PrivateKey privateKey) {
-        this.privateKey = privateKey;
-    }
-
-    public PublicKey getPublicKey() {
-        return publicKey;
-    }
-
-    public void setPublicKey(PublicKey publicKey) {
-        this.publicKey = publicKey;
-    }
 }
